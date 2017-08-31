@@ -5,12 +5,6 @@ import sortBy from 'sort-by'
 
 class SearchBooks extends React.Component {
 
-    state = {
-        query: '',
-        maxSearchResults: 0,
-        searchResult: []
-    }
-
     constructor(props) {
         super(props)
         this.state = {
@@ -18,6 +12,10 @@ class SearchBooks extends React.Component {
             maxSearchResults: 200,
             searchResult: []
         }
+    }
+
+    componentDidMount() {
+        this.searchInput.focus()
     }
 
     updateQuery = (query) => {
@@ -38,7 +36,7 @@ class SearchBooks extends React.Component {
                 console.log(`found ${searchResult.length} results for ${query}`)
                 searchResult.sort(sortBy('title'))
                 for (let book of searchResult) {
-                   console.log(` - id: ${book.id} title: ${book.title}`)
+                    console.log(` - id: ${book.id} title: ${book.title}`)
                 }
                 this.setState({searchResult: searchResult})
             } else {
@@ -56,9 +54,12 @@ class SearchBooks extends React.Component {
                     <div className='close-search'><Link className='close-search' to='/'>Close</Link></div>
                     <div className='search-books-input-wrapper'>
                         <input type='text' placeholder='Search by title or author'
+                               ref={(input) => {
+                                   this.searchInput = input
+                               }}
                                value={query}
                                onChange={(event) => this.updateQuery(event.target.value)}
-                               onKeyPress={(event) => event.key === 'Enter' ? this.performSearch() : ''}
+                               onKeyPress={(event) => event.key === 'Enter' && this.performSearch()}
                         />
                     </div>
                     <span>Now showing {searchResult.length} of {maxSearchResults}
@@ -68,7 +69,33 @@ class SearchBooks extends React.Component {
                     </div>
                 </div>
                 <div className='search-books-results'>
-                    <ol className='books-grid'></ol>
+                    <ol className='books-grid'>
+                        {searchResult.map((book) => (
+                            <li>
+                                <div className="book">
+                                    <div className="book-top">
+                                        <a target='_blank' href={book.previewLink} rel="noopener noreferrer">
+                                            <div className="book-cover" style={{
+                                                width: 128,
+                                                height: 174,
+                                                backgroundImage: `url(${book.imageLinks.smallThumbnail})`
+                                            }}></div>
+                                        </a>
+                                        <div className="book-shelf-changer">
+                                            <select>
+                                                <option value="none" disabled>Add to...</option>
+                                                <option value="currentlyReading">Currently Reading</option>
+                                                <option value="wantToRead">Want to Read</option>
+                                                <option value="read">Read</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="book-title">{book.title}</div>
+                                    <div className="book-authors">{book.authors}</div>
+                                </div>
+                            </li>
+                        ))}
+                    </ol>
                 </div>
             </div>
         )
