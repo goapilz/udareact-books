@@ -1,6 +1,6 @@
 import React from 'react'
 import {Route} from 'react-router-dom'
-import * as BooksAPI from './BooksAPI'
+import * as BooksAPI from './util/BooksAPI'
 import SearchBooks from './SearchBooks'
 import ListBooks from './ListBooks'
 import './App.css'
@@ -32,7 +32,7 @@ class App extends React.Component {
                     console.log(`loaded book: ${book.title} with state: ${book.shelf}`)
                     // fix errors when state does not match
                     if (!book.shelf) {
-                        book.shelf  = bookStates[0].id
+                        book.shelf = bookStates[0].id
                         console.log(`FIXING book: ${book.title} with state: ${book.shelf}`)
                         BooksAPI.update(book)
                     }
@@ -45,7 +45,7 @@ class App extends React.Component {
     onBookUpdate = (updatedBook) => {
         let books = this.state.books
         const exitingBook = books.find(book => book.id === updatedBook.id)
-        if  (!updatedBook.shelf && exitingBook) {
+        if (!updatedBook.shelf && exitingBook) {
             // delete
             console.log(`delete book: ${updatedBook.title} with state: ${updatedBook.shelf}`)
             books = books.filter(book => book.id !== exitingBook.id)
@@ -71,17 +71,18 @@ class App extends React.Component {
                 <div className='list-books-title'>
                     <h1>My Books</h1>
                 </div>
-                <Route exact path='/' render={() => (
+                <Route exact path='/' render={()=> (
                     <ListBooks
                         onBookUpdate={onBookUpdate}
                         bookStates={bookStates}
                         books={books}
                     />
                 )}/>
-                <Route path='/search' render={({history}) => (
+                <Route path='/search' render={() => (
                     <SearchBooks
                         onBookUpdate={onBookUpdate}
                         bookStates={bookStates}
+                        books={books}
                     />
                 )}/>
             </div>

@@ -1,7 +1,7 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import * as BooksAPI from './BooksAPI'
+import * as BooksAPI from './util/BooksAPI'
 import BookGrid from './BookGrid'
 
 // constant for amount of books that will be returned by the searchAPI
@@ -10,7 +10,17 @@ const maxSearchResults = 200
 class SearchBooks extends React.Component {
     static propTypes = {
         bookStates: PropTypes.array.isRequired,
-        onBookUpdate: PropTypes.func.isRequired
+        onBookUpdate: PropTypes.func.isRequired,
+        books: PropTypes.array.isRequired
+    }
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            query: '',
+            lastQuery: '',
+            searchResult: []
+        }
     }
 
     updateQuery = (query) => {
@@ -24,31 +34,32 @@ class SearchBooks extends React.Component {
 
     onSearch = () => {
         const query = this.state.query
+        const books = this.props.books
         console.log(`searching for ${query}`)
 
         // trigger new search
         BooksAPI.search(query, maxSearchResults).then(searchResult => {
             if (searchResult.length) {
-                console.log(`found ${searchResult.length} results for ${query}`)
+                console.log(`found ${searchResult.length} books for ${query}`)
                 /* for (let book of searchResult) {
                     console.log(` - id: ${book.id} title: ${book.title}`)
                 }*/
+
+                // 'merge' state of found books with books from the library
+                for (let searchBook of searchResult) {
+                    const exitingBook = books.find(book => book.id === searchBook.id)
+                    if (exitingBook) {
+                        searchBook.shelf = exitingBook.shelf
+                    }
+                }
+
                 this.setState({lastQuery: query, searchResult: searchResult})
             } else {
-                console.log(`no resuts for ${query}.`)
+                console.log(`no books found for ${query}`)
                 this.setState({lastQuery: query, searchResult: []})
             }
             this.selectSearchQuery()
         })
-    }
-
-    constructor(props) {
-        super(props)
-        this.state = {
-            query: '',
-            lastQuery: '',
-            searchResult: []
-        }
     }
 
     componentDidMount() {
