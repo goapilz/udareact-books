@@ -1,21 +1,15 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
+import PropTypes from 'prop-types'
 import * as BooksAPI from './BooksAPI'
+import Book from './Book'
 import sortBy from 'sort-by'
 
+
 class SearchBooks extends React.Component {
-
-    constructor(props) {
-        super(props)
-        this.state = {
-            query: '',
-            maxSearchResults: 200,
-            searchResult: []
-        }
-    }
-
-    componentDidMount() {
-        this.searchInput.focus()
+    static propTypes = {
+        bookStates: PropTypes.array.isRequired,
+        onBookUpdate: PropTypes.func.isRequired
     }
 
     updateQuery = (query) => {
@@ -26,7 +20,7 @@ class SearchBooks extends React.Component {
         this.setState({query: '', searchResult: []})
     }
 
-    performSearch = () => {
+    onSearch = () => {
         const {query, maxSearchResults} = this.state
         console.log(`searching for ${query}`)
 
@@ -46,17 +40,22 @@ class SearchBooks extends React.Component {
         })
     }
 
-    changeBookState = (book, state) => {
-        console.log(`change state of ${book.title} to ${state}`)
+    constructor(props) {
+        super(props)
+        this.state = {
+            query: '',
+            maxSearchResults: 200,
+            searchResult: []
+        }
     }
 
-    getBookState = (book) => {
-        return 'none';
+    componentDidMount() {
+        this.searchInput.focus()
     }
-
 
     render() {
-        const {query, searchResult, maxSearchResults} = this.state;
+        const {bookStates, onBookUpdate} = this.props
+        const {query, searchResult, maxSearchResults} = this.state
         return (
             <div className='search-books'>
                 <div className='search-books-bar'>
@@ -68,7 +67,7 @@ class SearchBooks extends React.Component {
                                }}
                                value={query}
                                onChange={(event) => this.updateQuery(event.target.value)}
-                               onKeyPress={(event) => event.key === 'Enter' && this.performSearch()}
+                               onKeyPress={(event) => event.key === 'Enter' && this.onSearch()}
                         />
                     </div>
                     <span>Now showing {searchResult.length} of {maxSearchResults}
@@ -80,33 +79,7 @@ class SearchBooks extends React.Component {
                 <div className='search-books-results'>
                     <ol className='books-grid'>
                         {searchResult.map((book) => (
-                            <li key={book.id}>
-                                <div className="book">
-                                    <div className="book-top">
-                                        <a target='_blank' href={book.previewLink} rel="noopener noreferrer">
-                                            <div className="book-cover" style={{
-                                                width: 128,
-                                                height: 174,
-                                                backgroundImage: `url(${book.imageLinks.smallThumbnail})`
-                                            }}></div>
-                                        </a>
-                                        <div className="book-shelf-changer">
-                                            <select onChange={(event) => this.changeBookState(book, event.target.value)}
-                                                    value={this.getBookState(book)}>
-                                                <option value="none" disabled>Add to...</option>
-                                                <option value="currentlyReading">Currently Reading</option>
-                                                <option value="wantToRead">Want to Read</option>
-                                                <option value="read">Read</option>
-                                                <option value="none">None</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className="book-title">{book.title}</div>
-                                        {book.authors.map((author) => (
-                                            <div className='book-authors' key={author}>{author}</div>
-                                        ))}
-                                </div>
-                            </li>
+                            <Book key={book.id} book={book} bookStates={bookStates} onBookUpdate={onBookUpdate}/>
                         ))}
                     </ol>
                 </div>

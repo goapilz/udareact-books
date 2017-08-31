@@ -9,66 +9,73 @@ import './App.css'
 
 
 class App extends React.Component {
-  state = {
-      books: []
-  }
 
-  constructor(props) {
-    super(props)
-    this.state = {
-        searchResult: [],
-        books: [],
-        showSearchPage: true
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            searchResult: [],
+            books: [],
+            showSearchPage: true
+        }
+        //
+        // let book = {
+        //     id: 23,
+        //     name: "My FirstBook",
+        //     isbn: 1234567890,
+        //     order: 0,
+        //     status: "read"
+        // }
+
+        // BooksAPI.updategetAll()
+        //
+
+        // let searchedBooks = JSON.stringify(BooksAPI.search("java", 50).books)
+
+        // BooksAPI.search("java", 50).then(searchResult => {
+        //     for (let book in searchResult) {
+        //         console.log(book)
+        //     }
+        //     this.setState({searchResult: searchResult})
+        // })
+
+        //ContactsAPI.getAll().then(contacts => {
+        //   this.setState({contacts})
+        //})
+
+
+        // let tempBooks = BooksAPI.getAll()
+        // console.log(tempBooks.length)
     }
-    //
-    // let book = {
-    //     id: 23,
-    //     name: "My FirstBook",
-    //     isbn: 1234567890,
-    //     order: 0,
-    //     status: "read"
-    // }
 
-    // BooksAPI.updategetAll()
-      //
+    bookStates = [{id: 'currentlyReading', name: 'Currently Reading'}, {
+        id: 'wantToRead',
+        name: 'Want to Read'
+    }, {id: 'read', name: 'Read'}, {id: 'none', name: 'None'}]
 
-     // let searchedBooks = JSON.stringify(BooksAPI.search("java", 50).books)
+    onBookUpdate = (book) => {
+        console.log(`updated book: ${book.title} with state: ${book.state}`)
+    }
 
-      // BooksAPI.search("java", 50).then(searchResult => {
-      //     for (let book in searchResult) {
-      //         console.log(book)
-      //     }
-      //     this.setState({searchResult: searchResult})
-      // })
+    render() {
+        return (
+            <div className='app'>
+                <Route exact path='/' render={() => (
+                    <ListBooks
+                        onDeleteContact={this.removeContact}
+                        contacts={this.state.contacts}
+                    />
+                )}/>
 
-      //ContactsAPI.getAll().then(contacts => {
-       //   this.setState({contacts})
-      //})
-
-
-     // let tempBooks = BooksAPI.getAll()
-     // console.log(tempBooks.length)
-  }
-
-  render() {
-    return (
-        <div className='app'>
-            <Route exact path='/' render={() => (
-                <ListBooks
-                    onDeleteContact={this.removeContact}
-                    contacts={this.state.contacts}
-                />
-            )}/>
-
-            <Route path='/search' render={({history}) => (
-                <SearchBooks
-                    onCreateContact={this.createContact}
-                    tempHistory={history}
-                />
-            )}/>
-        </div>
-    )
-  }
+                <Route path='/search' render={({history}) => (
+                    <SearchBooks
+                        onBookUpdate={this.onBookUpdate}
+                        bookStates={this.bookStates}
+                    />
+                )}/>
+            </div>
+        )
+    }
 }
 
 export default App
