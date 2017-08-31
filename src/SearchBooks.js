@@ -3,8 +3,6 @@ import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import * as BooksAPI from './BooksAPI'
 import BookGrid from './BookGrid'
-import sortBy from 'sort-by'
-
 
 class SearchBooks extends React.Component {
     static propTypes = {
@@ -17,7 +15,8 @@ class SearchBooks extends React.Component {
     }
 
     clearQuery = () => {
-        this.setState({query: '', searchResult: []})
+        this.setState({query: '', lastQuery: '', searchResult: []})
+        this.focusSearchQuery()
     }
 
     onSearch = () => {
@@ -28,15 +27,15 @@ class SearchBooks extends React.Component {
         BooksAPI.search(query, maxSearchResults).then(searchResult => {
             if (searchResult.length) {
                 console.log(`found ${searchResult.length} results for ${query}`)
-                searchResult.sort(sortBy('title'))
-                for (let book of searchResult) {
+                /* for (let book of searchResult) {
                     console.log(` - id: ${book.id} title: ${book.title}`)
-                }
-                this.setState({searchResult: searchResult})
+                }*/
+                this.setState({lastQuery: query, searchResult: searchResult})
             } else {
                 console.log(`no resuts for ${query}.`)
-                this.setState({searchResult: []})
+                this.setState({lastQuery: query, searchResult: []})
             }
+            this.selectSearchQuery()
         })
     }
 
@@ -44,20 +43,29 @@ class SearchBooks extends React.Component {
         super(props)
         this.state = {
             query: '',
+            lastQuery: '',
             maxSearchResults: 200,
             searchResult: []
         }
     }
 
     componentDidMount() {
+        this.focusSearchQuery()
+    }
+
+    focusSearchQuery()  {
         this.searchInput.focus()
+    }
+
+    selectSearchQuery() {
+        this.searchInput.select()
     }
 
     render() {
         const {bookStates, onBookUpdate} = this.props
-        const {query, searchResult} = this.state
+        const {query, lastQuery, searchResult} = this.state
         return (
-            <div className='search-books'>
+            <div>
                 <div className='search-books-bar'>
                     <div className='close-search'><Link className='close-search' to='/'>Close</Link></div>
                     <div className='search-books-input-wrapper'>
@@ -72,7 +80,7 @@ class SearchBooks extends React.Component {
                     </div>
                     <div className='clear-search'><button className='clear-search' onClick={this.clearQuery}/></div>
                 </div>
-                <BookGrid gridClassName='search-books-results' gridDisplayName='Searchresult' bookStates={bookStates} books={searchResult} onBookUpdate={onBookUpdate}/>
+                <BookGrid gridClassName='search-books-results' gridDisplayName={`Searchresult for ${lastQuery}`} bookStates={bookStates} books={searchResult} onBookUpdate={onBookUpdate}/>
             </div>
         )
     }

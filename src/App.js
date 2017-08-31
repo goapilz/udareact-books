@@ -1,76 +1,86 @@
 import React from 'react'
 import {Route} from 'react-router-dom'
-// import * as BooksAPI from './BooksAPI'
+import * as BooksAPI from './BooksAPI'
 import SearchBooks from './SearchBooks'
 import ListBooks from './ListBooks'
-// import {search} from './BooksAPI'
 import './App.css'
 
-
+// constant for all different bookshelf types
+const bookStates = [
+    {id: 'currentlyReading', name: 'Currently Reading'},
+    {id: 'wantToRead', name: 'Want to Read'},
+    {id: 'read', name: 'Read'}
+]
 
 class App extends React.Component {
 
     constructor(props) {
         super(props)
-
         this.state = {
-            searchResult: [],
-            books: [],
-            showSearchPage: true
+            books: []
         }
-        //
-        // let book = {
-        //     id: 23,
-        //     name: "My FirstBook",
-        //     isbn: 1234567890,
-        //     order: 0,
-        //     status: "read"
-        // }
-
-        // BooksAPI.updategetAll()
-        //
-
-        // let searchedBooks = JSON.stringify(BooksAPI.search("java", 50).books)
-
-        // BooksAPI.search("java", 50).then(searchResult => {
-        //     for (let book in searchResult) {
-        //         console.log(book)
-        //     }
-        //     this.setState({searchResult: searchResult})
-        // })
-
-        //ContactsAPI.getAll().then(contacts => {
-        //   this.setState({contacts})
-        //})
-
-
-        // let tempBooks = BooksAPI.getAll()
-        // console.log(tempBooks.length)
     }
 
-    bookStates = [{id: 'currentlyReading', name: 'Currently Reading'}, {
-        id: 'wantToRead',
-        name: 'Want to Read'
-    }, {id: 'read', name: 'Read'}, {id: 'none', name: 'None'}]
+    componentDidMount() {
+        console.log('app componentDidMount')
+        // load all books
+        const books = this.state.books
+        if (books.length === 0) {
+            console.log('app componentDidMount 0')
+            BooksAPI.getAll().then(allBooks => {
+                for (let book of allBooks) {
+                    console.log(`loaded book: ${book.title} with state: ${book.state}`)
+                    // TODO fix errors -> later delete entries from server
+                    if (!book.state) {
+                        book.state  = bookStates[0].id
+                        console.log(`FIXING book: ${book.title} with state: ${book.state}`)
+                        BooksAPI.update(book)
+                    }
+                }
+                this.setState({books: allBooks})
+            })
+        }
+    }
 
     onBookUpdate = (book) => {
-        console.log(`updated book: ${book.title} with state: ${book.state}`)
+        let books = this.state.books
+        const exitingBook = books.find(currentBook => currentBook.id === book.id)
+        if  (!book.state && exitingBook) {
+            // delete
+            console.log(`delete book: ${book.title} with state: ${book.state}`)
+            books.remove(exitingBook)
+        } else if (exitingBook) {
+            // update
+            console.log(`update book: ${book.title} with state: ${book.state}`)
+            exitingBook.state = book.state
+        } else {
+            // add
+            console.log(`add book: ${book.title} with state: ${book.state}`)
+            books = books.concat([book])
+        }
+        console.log(`${books.length} books`)
+        this.setState({books: books})
     }
 
     render() {
+        const onBookUpdate = this.onBookUpdate
+        const books = this.state.books
         return (
             <div className='app'>
+                <div className='list-books-title'>
+                    <h1>My Books</h1>
+                </div>
                 <Route exact path='/' render={() => (
                     <ListBooks
-                        onDeleteContact={this.removeContact}
-                        contacts={this.state.contacts}
+                        onBookUpdate={onBookUpdate}
+                        bookStates={bookStates}
+                        books={books}
                     />
                 )}/>
-
                 <Route path='/search' render={({history}) => (
                     <SearchBooks
-                        onBookUpdate={this.onBookUpdate}
-                        bookStates={this.bookStates}
+                        onBookUpdate={onBookUpdate}
+                        bookStates={bookStates}
                     />
                 )}/>
             </div>
