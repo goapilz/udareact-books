@@ -22,18 +22,18 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        console.log('app componentDidMount')
+        console.log('app initialized')
         // load all books
         const books = this.state.books
         if (books.length === 0) {
-            console.log('app componentDidMount 0')
+            console.log('loading books')
             BooksAPI.getAll().then(allBooks => {
                 for (let book of allBooks) {
-                    console.log(`loaded book: ${book.title} with state: ${book.state}`)
-                    // TODO fix errors -> later delete entries from server
-                    if (!book.state) {
-                        book.state  = bookStates[0].id
-                        console.log(`FIXING book: ${book.title} with state: ${book.state}`)
+                    console.log(`loaded book: ${book.title} with state: ${book.shelf}`)
+                    // fix errors when state does not match
+                    if (!book.shelf) {
+                        book.shelf  = bookStates[0].id
+                        console.log(`FIXING book: ${book.title} with state: ${book.shelf}`)
                         BooksAPI.update(book)
                     }
                 }
@@ -42,24 +42,25 @@ class App extends React.Component {
         }
     }
 
-    onBookUpdate = (book) => {
+    onBookUpdate = (updatedBook) => {
         let books = this.state.books
-        const exitingBook = books.find(currentBook => currentBook.id === book.id)
-        if  (!book.state && exitingBook) {
+        const exitingBook = books.find(book => book.id === updatedBook.id)
+        if  (!updatedBook.shelf && exitingBook) {
             // delete
-            console.log(`delete book: ${book.title} with state: ${book.state}`)
-            books.remove(exitingBook)
+            console.log(`delete book: ${updatedBook.title} with state: ${updatedBook.shelf}`)
+            books = books.filter(book => book.id !== exitingBook.id)
         } else if (exitingBook) {
             // update
-            console.log(`update book: ${book.title} with state: ${book.state}`)
-            exitingBook.state = book.state
+            console.log(`update book: ${updatedBook.title} with state: ${updatedBook.shelf}`)
+            exitingBook.shelf = updatedBook.shelf
         } else {
             // add
-            console.log(`add book: ${book.title} with state: ${book.state}`)
-            books = books.concat([book])
+            console.log(`add book: ${updatedBook.title} with state: ${updatedBook.shelf}`)
+            books = books.concat([updatedBook])
         }
         console.log(`${books.length} books`)
         this.setState({books: books})
+        BooksAPI.update(updatedBook)
     }
 
     render() {

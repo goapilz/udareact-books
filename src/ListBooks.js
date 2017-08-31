@@ -16,7 +16,9 @@ class ListBooks extends React.Component {
         return (
             <div className="list-books-content">
                 {bookStates.map((bookState) => (
-                    <BookGrid gridClassName='bookshelf' gridDisplayName={bookState.name} key={bookState.id} bookStates={bookStates} books={books.filter(book => book.state === bookState.id)} onBookUpdate={onBookUpdate}/>
+                    <BookGrid gridClassName='bookshelf' gridDisplayName={bookState.name} key={bookState.id}
+                              bookStates={bookStates} books={books.filter(book => book.shelf === bookState.id)}
+                              onBookUpdate={onBookUpdate}/>
                 ))}
                 <div className='open-search'>
                     <Link to='/search' className='open-search'/>

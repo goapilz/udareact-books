@@ -4,6 +4,9 @@ import PropTypes from 'prop-types'
 import * as BooksAPI from './BooksAPI'
 import BookGrid from './BookGrid'
 
+// constant for amount of books that will be returned by the searchAPI
+const maxSearchResults = 200
+
 class SearchBooks extends React.Component {
     static propTypes = {
         bookStates: PropTypes.array.isRequired,
@@ -20,7 +23,7 @@ class SearchBooks extends React.Component {
     }
 
     onSearch = () => {
-        const {query, maxSearchResults} = this.state
+        const query = this.state.query
         console.log(`searching for ${query}`)
 
         // trigger new search
@@ -44,7 +47,6 @@ class SearchBooks extends React.Component {
         this.state = {
             query: '',
             lastQuery: '',
-            maxSearchResults: 200,
             searchResult: []
         }
     }

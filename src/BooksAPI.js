@@ -20,15 +20,20 @@ export const getAll = () =>
         .then(res => res.json())
         .then(data => data.books)
 
-export const update = (book) =>
+export const update = (book) => {
+    let shelf = book.shelf
+    if (!shelf) {
+        shelf = 'none'
+    }
     fetch(`${api}/books/${book.id}`, {
         method: 'PUT',
         headers: {
             ...headers,
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({book})
+        body: JSON.stringify({shelf})
     }).then(res => res.json())
+}
 
 export const search = (query, maxResults) =>
     fetch(`${api}/search`, {
