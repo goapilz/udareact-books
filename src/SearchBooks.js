@@ -46,6 +46,15 @@ class SearchBooks extends React.Component {
         })
     }
 
+    changeBookState = (book, state) => {
+        console.log(`change state of ${book.title} to ${state}`)
+    }
+
+    getBookState = (book) => {
+        return 'none';
+    }
+
+
     render() {
         const {query, searchResult, maxSearchResults} = this.state;
         return (
@@ -71,7 +80,7 @@ class SearchBooks extends React.Component {
                 <div className='search-books-results'>
                     <ol className='books-grid'>
                         {searchResult.map((book) => (
-                            <li>
+                            <li key={book.id}>
                                 <div className="book">
                                     <div className="book-top">
                                         <a target='_blank' href={book.previewLink} rel="noopener noreferrer">
@@ -82,16 +91,20 @@ class SearchBooks extends React.Component {
                                             }}></div>
                                         </a>
                                         <div className="book-shelf-changer">
-                                            <select>
+                                            <select onChange={(event) => this.changeBookState(book, event.target.value)}
+                                                    value={this.getBookState(book)}>
                                                 <option value="none" disabled>Add to...</option>
                                                 <option value="currentlyReading">Currently Reading</option>
                                                 <option value="wantToRead">Want to Read</option>
                                                 <option value="read">Read</option>
+                                                <option value="none">None</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div className="book-title">{book.title}</div>
-                                    <div className="book-authors">{book.authors}</div>
+                                        {book.authors.map((author) => (
+                                            <div className='book-authors' key={author}>{author}</div>
+                                        ))}
                                 </div>
                             </li>
                         ))}
