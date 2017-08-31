@@ -1,0 +1,61 @@
+                
+                <div className="open-search">
+                    <Link to="/create" className="add-contact">Add Contact</Link>
+                    <a onClick={() => this.setState({ books: [] })}>Add a book</a>
+                </div>
+
+
+<a className="close-search" onClick={() => this.setState({query: ''})}>Close</a>
+
+
+                for (let book in searchResult) {
+                    console.log(book)
+                }
+
+
+
+
+                            <div className="book">
+                                <div className="book-top">
+                                    <li key={book.id}>
+                                        <div className='contact-avatar' style={{
+                                            backgroundImage: `url(${book.url})`
+                                        }}/>
+                                        <div className='book-title'>
+                                            <p>Name: </p>
+                                        </div>
+                                        <div className='book-authors'>
+                                            <p>email: {book.description}</p>
+                                        </div>
+                                    </li>
+                                </div>
+                            </div>
+
+
+                        <div className='book-shelf-changer' style={this.isBookStateSet() ? {} : {background: '#999999' } }>
+
+
+
+        {filteredContacts.length !== contacts.length && (
+          <div className='showing-contacts'>
+            <span>Now showing {filteredContacts.length} of {contacts.length}
+              total (searching for: {JSON.stringify(query)})</span>
+            <button onClick={this.clearQuery}>Show all</button>
+          </div>
+        )}
+
+
+onKeyDown={(event) => event.keyCode === 27 && this.clearQuery()}
+
+
+
+                    <div className='clear-search'>
+                        <button onClick={this.clearQuery}/>
+                    </div>
+
+<button className='clear-search' onClick={this.clearQuery}/>
+
+
+        this.setState(prevState => ({
+            contacts: prevState.contacts.concat([ contact ])
+        }))
