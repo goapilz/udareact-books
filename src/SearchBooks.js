@@ -2,7 +2,7 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import * as BooksAPI from './BooksAPI'
-import Book from './Book'
+import BookGrid from './BookGrid'
 import sortBy from 'sort-by'
 
 
@@ -55,7 +55,7 @@ class SearchBooks extends React.Component {
 
     render() {
         const {bookStates, onBookUpdate} = this.props
-        const {query, searchResult, maxSearchResults} = this.state
+        const {query, searchResult} = this.state
         return (
             <div className='search-books'>
                 <div className='search-books-bar'>
@@ -70,19 +70,9 @@ class SearchBooks extends React.Component {
                                onKeyPress={(event) => event.key === 'Enter' && this.onSearch()}
                         />
                     </div>
-                    <span>Now showing {searchResult.length} of {maxSearchResults}
-                        total (searching for: {JSON.stringify(query)})</span>
-                    <div className='close-search'>
-                        <button onClick={this.clearQuery}>clear</button>
-                    </div>
+                    <div className='clear-search'><a className='clear-search' onClick={this.clearQuery}/></div>
                 </div>
-                <div className='search-books-results'>
-                    <ol className='books-grid'>
-                        {searchResult.map((book) => (
-                            <Book key={book.id} book={book} bookStates={bookStates} onBookUpdate={onBookUpdate}/>
-                        ))}
-                    </ol>
-                </div>
+                <BookGrid gridClassName='search-books-results' gridDisplayName='Searchresult' bookStates={bookStates} books={searchResult} onBookUpdate={onBookUpdate}/>
             </div>
         )
     }

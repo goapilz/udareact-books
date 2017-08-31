@@ -101,37 +101,43 @@ body, .app {
     outline: none;
 }
 
-.close-search {
+.close-search,
+.close-search a:hover,
+.clear-search,
+.clear-search a:hover {
     display: block;
     top: 20px;
     left: 15px;
     width: 50px;
     height: 53px;
-    background: white;
-    background-image: url('./icons/arrow-back.svg');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 28px;
+    background: white center no-repeat;
     font-size: 0;
+    border: 0px;
+    cursor: pointer;
 }
 
+.close-search {
+    background-image: url('./icons/arrow-back.svg');
+    background-size: 28px;
+}
 .close-search a:hover {
-    display: block;
-    top: 20px;
-    left: 15px;
-    width: 50px;
-    height: 53px;
-    background: white;
     background-image: url('./icons/arrow-green.svg');
-    background-position: center;
-    background-repeat: no-repeat;
     background-size: 32px;
-    font-size: 0;
+}
+
+.clear-search {
+    background-image: url('./icons/clear-back.svg');
+    background-size: 28px;
+}
+.clear-search a:hover {
+    background-image: url('./icons/clear-green.svg');
+    background-size: 32px;
 }
 
 .search-books-results {
     padding: 80px 10px 20px;
 }
+
 
 /* books grid */
 
@@ -175,6 +181,7 @@ body, .app {
     align-items: flex-end;
 }
 
+
 .book-shelf-changer,
 .book-shelf-changer-unset {
     position: absolute;
@@ -183,19 +190,18 @@ body, .app {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: #60ac5d;
-    background-image: url('./icons/arrow-drop-down.svg');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 20px;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
-.book-shelf-changer-unset {
-    background: #cccccc;
+.book-shelf-changer {
+    background: #60ac5d no-repeat center;
     background-image: url('./icons/arrow-drop-down.svg');
-    background-repeat: no-repeat;
-    background-position: center;
+    background-size: 20px;
+}
+
+.book-shelf-changer-unset {
+    background: #cccccc no-repeat center;
+    background-image: url('./icons/arrow-drop-down.svg');
     background-size: 20px;
 }
 
@@ -208,18 +214,14 @@ body, .app {
 }
 
 .book-shelf-changer:hover {
-    background: #70bc6d;
+    background: #70bc6d no-repeat center;
     background-image: url('./icons/arrow-drop-down.svg');
-    background-repeat: no-repeat;
-    background-position: center;
     background-size: 24px;
     box-shadow: 0 6px 9px rgba(0, 0, 0, 0.16), 0 6px 9px rgba(0, 0, 0, 0.23);
 }
 .book-shelf-changer-unset:hover {
-    background: #dddddd;
+    background: #dddddd no-repeat center;
     background-image: url('./icons/arrow-drop-down.svg');
-    background-repeat: no-repeat;
-    background-position: center;
     background-size: 24px;
     box-shadow: 0 6px 9px rgba(0, 0, 0, 0.16), 0 6px 9px rgba(0, 0, 0, 0.23);
 }
