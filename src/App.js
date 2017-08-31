@@ -3,14 +3,8 @@ import {Route} from 'react-router-dom'
 import * as BooksAPI from './util/BooksAPI'
 import SearchBooks from './SearchBooks'
 import ListBooks from './ListBooks'
-import './App.css'
-
-// constant for all different bookshelf types
-const bookStates = [
-    {id: 'currentlyReading', name: 'Currently Reading'},
-    {id: 'wantToRead', name: 'Want to Read'},
-    {id: 'read', name: 'Read'}
-]
+import {bookStates} from './util/Constants'
+import './css/app.css'
 
 class App extends React.Component {
 
@@ -30,7 +24,7 @@ class App extends React.Component {
             BooksAPI.getAll().then(allBooks => {
                 for (let book of allBooks) {
                     console.log(`loaded book: ${book.title} with state: ${book.shelf}`)
-                    // fix errors when state does not match
+                    // little hack to fix errors when no state is set or does not match
                     if (!book.shelf) {
                         book.shelf = bookStates[0].id
                         console.log(`FIXING book: ${book.title} with state: ${book.shelf}`)

@@ -3,11 +3,10 @@ import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import * as BooksAPI from './util/BooksAPI'
 import BookGrid from './BookGrid'
-
-// constant for amount of books that will be returned by the searchAPI
-const maxSearchResults = 200
+import {maxSearchResults} from './util/Constants'
 
 class SearchBooks extends React.Component {
+
     static propTypes = {
         bookStates: PropTypes.array.isRequired,
         onBookUpdate: PropTypes.func.isRequired,

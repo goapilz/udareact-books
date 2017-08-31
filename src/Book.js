@@ -1,8 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-
-// constant for a not assigned book
-const nullBookState = {id: 'none', name: 'None'}
+import {nullBookState} from './util/Constants'
 
 class Book extends React.Component {
 
@@ -11,7 +9,6 @@ class Book extends React.Component {
         book: PropTypes.object.isRequired,
         onBookUpdate: PropTypes.func.isRequired
     }
-
 
     constructor(props) {
         super(props)
