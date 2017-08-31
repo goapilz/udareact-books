@@ -104,7 +104,7 @@ body, .app {
 .close-search,
 .close-search a:hover,
 .clear-search,
-.clear-search a:hover {
+.clear-search button:hover {
     display: block;
     top: 20px;
     left: 15px;
@@ -129,7 +129,7 @@ body, .app {
     background-image: url('./icons/clear-back.svg');
     background-size: 28px;
 }
-.clear-search a:hover {
+.clear-search button:hover {
     background-image: url('./icons/clear-green.svg');
     background-size: 32px;
 }

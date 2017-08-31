@@ -70,7 +70,7 @@ class SearchBooks extends React.Component {
                                onKeyPress={(event) => event.key === 'Enter' && this.onSearch()}
                         />
                     </div>
-                    <div className='clear-search'><a className='clear-search' onClick={this.clearQuery}/></div>
+                    <div className='clear-search'><button className='clear-search' onClick={this.clearQuery}/></div>
                 </div>
                 <BookGrid gridClassName='search-books-results' gridDisplayName='Searchresult' bookStates={bookStates} books={searchResult} onBookUpdate={onBookUpdate}/>
             </div>
