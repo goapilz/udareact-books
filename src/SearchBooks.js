@@ -65,7 +65,7 @@ class SearchBooks extends React.Component {
         this.focusSearchQuery()
     }
 
-    focusSearchQuery()  {
+    focusSearchQuery() {
         this.searchInput.focus()
     }
 

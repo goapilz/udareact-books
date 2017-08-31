@@ -56,7 +56,7 @@ class Book extends React.Component {
                         </a>
                         <div className={this.isBookStateSet() ? 'book-shelf-changer' : 'book-shelf-changer-unset'}>
                             <select onChange={(event) => this.updateBookState(event.target.value)}
-                                    value={this.getBookState(book)}>
+                                    value={this.getBookState()}>
                                 <option value='menuLabel' disabled>Move to...</option>
                                 {bookStates.map((bookState) => (
                                     <option value={bookState.id} key={bookState.id}>{bookState.name}</option>
