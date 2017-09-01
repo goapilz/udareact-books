@@ -24,6 +24,7 @@ Structure of project
   -[util]
     -BooksAPI.js     the api of the project to communicate with the backend server
     -Constants.js    extracted constants like bookshelf names or maximum search amount
+    -Logger.js       console logger that can be enabled for debugging issues
   -[src]
     -index.js        start code for the react app
     -App.js          main 'class' of the app where switching between List and Search and the persistence is implemented
