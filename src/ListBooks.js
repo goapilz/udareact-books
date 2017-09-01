@@ -20,9 +20,7 @@ class ListBooks extends React.Component {
                               bookStates={bookStates} books={books.filter(book => book.shelf === bookState.id)}
                               onBookUpdate={onBookUpdate}/>
                 ))}
-                <div className='open-search'>
-                    <Link to='/search' className='open-search'/>
-                </div>
+                <Link to='/search' className='open-search'/>
             </div>
         )
     }

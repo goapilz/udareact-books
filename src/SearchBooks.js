@@ -79,7 +79,7 @@ class SearchBooks extends React.Component {
         return (
             <div>
                 <div className='search-books-bar'>
-                    <div className='close-search'><Link className='close-search' to='/'>Close</Link></div>
+                    <Link className='close-search' to='/'>Close</Link>
                     <div className='search-books-input-wrapper'>
                         <input type='text' placeholder='Search by title or author'
                                ref={(input) => {
@@ -87,12 +87,12 @@ class SearchBooks extends React.Component {
                                }}
                                value={query}
                                onChange={(event) => this.updateQuery(event.target.value)}
-                               onKeyPress={(event) => event.key === 'Enter' && this.onSearch()}
-                        />
+                               onKeyPress={(event) => event.key === 'Enter' && this.onSearch()}/>
                     </div>
-                    <div className='clear-search'><button className='clear-search' onClick={this.clearQuery}/></div>
+                    <button className='clear-search' onClick={this.clearQuery}/>
                 </div>
-                <BookGrid gridClassName='search-books-results' gridDisplayName={`Searchresult for ${lastQuery}`} bookStates={bookStates} books={searchResult} onBookUpdate={onBookUpdate}/>
+                <BookGrid gridClassName='search-books-results' gridDisplayName={`Searchresult for ${lastQuery}`}
+                          bookStates={bookStates} books={searchResult} onBookUpdate={onBookUpdate}/>
             </div>
         )
     }

@@ -48,9 +48,6 @@ body, .app {
     position: fixed;
     right: 25px;
     bottom: 25px;
-}
-
-.open-search a {
     display: block;
     width: 50px;
     height: 50px;
@@ -64,7 +61,7 @@ body, .app {
     font-size: 0;
 }
 
-.open-search a:hover {
+.open-search:hover {
     background: #70bc6d;
     background-image: url('../icons/add.svg');
     background-repeat: no-repeat;
@@ -100,9 +97,9 @@ body, .app {
 }
 
 .close-search,
-.close-search a:hover,
+.close-search:hover,
 .clear-search,
-.clear-search button:hover {
+.clear-search:hover {
     display: block;
     top: 20px;
     left: 15px;
@@ -119,7 +116,7 @@ body, .app {
     background-size: 28px;
 }
 
-.close-search a:hover {
+.close-search:hover {
     background-image: url('../icons/back-green.svg');
     background-size: 32px;
 }
@@ -129,7 +126,7 @@ body, .app {
     background-size: 28px;
 }
 
-.clear-search button:hover {
+.clear-search:hover {
     background-image: url('../icons/clear-green.svg');
     background-size: 32px;
 }
