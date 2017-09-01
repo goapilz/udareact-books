@@ -59,3 +59,15 @@ onKeyDown={(event) => event.keyCode === 27 && this.clearQuery()}
         this.setState(prevState => ({
             contacts: prevState.contacts.concat([ contact ])
         }))
+
+
+                            <div className='book-cover'
+                                 style={{backgroundImage: `url(${book.imageLinks && book.imageLinks.smallThumbnail ? book.imageLinks.smallThumbnail : '../icons/noimage.png'})`}}/>
+
+
+style={book.imageLinks && book.imageLinks.smallThumbnail && {backgroundImage: `url(${book.imageLinks.smallThumbnail})`}}
+
+
+search:
+onChange={(event) => this.onSearch(event.target.value)}/>
+onKeyPress={(event) => event.key === 'Enter' && this.onSearch()}/>
