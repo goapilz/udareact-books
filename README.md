@@ -17,6 +17,7 @@ Install notes
 Structure of project
 ====================
 
+```
 -[root]
   -[public]          index.html and favicon to launch the react app
   -[css]             stylesheets of the project
@@ -34,3 +35,4 @@ Structure of project
     -BookGrid.js     bookgrid component that visualizes a collection of books
 
   -[snippets]        some 'private' code/docu
+```
