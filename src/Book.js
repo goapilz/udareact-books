@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {nullBookState} from './util/Constants'
+import {log} from './util/Logger'
 
 class Book extends React.Component {
 
@@ -23,7 +24,7 @@ class Book extends React.Component {
         } else {
             book.shelf = updatedState
         }
-        console.log(`change state of ${book.title} to ${book.shelf}`)
+        log(`change state of ${book.title} to ${book.shelf}`)
         this.setState({state: book.shelf})
         onBookUpdate(book)
     }
@@ -63,9 +64,6 @@ class Book extends React.Component {
                     </div>
                     <div className='book-title'>{book.title}</div>
                     {book.authors && (<div className='book-authors'>{book.authors.join(', ')}</div>)}
-                    {/* {book.authors && book.authors.map((author) => (
-                        <div className='book-authors' key={author}>{author}</div>
-                    ))}*/}
                 </div>
             </li>
         )

@@ -71,3 +71,10 @@ style={book.imageLinks && book.imageLinks.smallThumbnail && {backgroundImage: `u
 search:
 onChange={(event) => this.onSearch(event.target.value)}/>
 onKeyPress={(event) => event.key === 'Enter' && this.onSearch()}/>
+
+
+import {log} from './util/Logger'
+
+                    {book.authors && book.authors.map((author) => (
+                        <div className='book-authors' key={author}>{author}</div>
+                    ))}

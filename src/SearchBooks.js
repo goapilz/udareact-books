@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import * as BooksAPI from './util/BooksAPI'
 import BookGrid from './BookGrid'
 import {maxSearchResults} from './util/Constants'
+import {log} from './util/Logger'
 
 class SearchBooks extends React.Component {
 
@@ -27,11 +28,12 @@ class SearchBooks extends React.Component {
         this.focusSearchQuery()
     }
 
-    timestamp = 0;
+    // searchTimestamp for searchApi calls so only the last executed query wins
+    searchTimestamp = 0;
 
     onSearch = (query) => {
         const newTimestamp = Date.now();
-        this.timestamp = newTimestamp;
+        this.searchTimestamp = newTimestamp;
 
         const newQuery = query.trim();
 
@@ -51,20 +53,20 @@ class SearchBooks extends React.Component {
                         }
                     }
 
-                    if (this.timestamp === newTimestamp) {
+                    if (this.searchTimestamp === newTimestamp) {
                         this.setState({lastQuery: newQuery, searchResult: searchResult})
-                        console.log(`found ${searchResult.length} books for ${newQuery}`)
+                        log(`found ${searchResult.length} books for ${newQuery}`)
                     }
                 } else {
-                    if (this.timestamp === newTimestamp) {
+                    if (this.searchTimestamp === newTimestamp) {
                         this.setState({lastQuery: newQuery, searchResult: []})
-                        console.log(`no books found for ${newQuery}`)
+                        log(`no books found for ${newQuery}`)
                     }
                 }
             })
         } else {
             this.setState({query: newQuery, lastQuery: newQuery, searchResult: []})
-            console.log(`empty query`)
+            log(`empty query`)
         }
     }
 

@@ -12,3 +12,4 @@ export const nullBookState = {id: 'none', name: 'None'}
 
 // constant for amount of books that will be returned by the searchAPI
 export const maxSearchResults = 200
+
