@@ -47,11 +47,8 @@ class Book extends React.Component {
                 <div className='book'>
                     <div className='book-top'>
                         <a target='_blank' href={book.previewLink} rel='noopener noreferrer'>
-                            <div className='book-cover' style={{
-                                width: 128,
-                                height: 174,
-                                backgroundImage: `url(${book.imageLinks.smallThumbnail})`
-                            }}></div>
+                            <div className='book-cover'
+                                 style={{backgroundImage: `url(${book.imageLinks.smallThumbnail})`}}/>
                         </a>
                         <div className={this.isBookStateSet() ? 'book-shelf-changer' : 'book-shelf-changer-unset'}>
                             <select onChange={(event) => this.updateBookState(event.target.value)}
