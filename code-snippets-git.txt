@@ -1,0 +1,37 @@
+commands for git
+================
+
+
+commiting (uncommited) changes to a new branch:
+
+1. git checkout -b searchquery-using-url-parameter
+   create and switch to a new branch. the (uncommited) changes are "moved" to this branch
+2. git add *
+   add new files to branch (optional)
+3. git commit -a
+   commit the files
+4. git push --set-upstream origin searchquery-using-url-parameter
+   push changes to git by setting up the new upstream
+
+
+normal commit:
+1. git status
+   see what was changed
+2. git add *
+   add files if necessary
+3. git commit -a
+   commit the files
+4. git push
+   push files to git
+
+
+checkout (clone) repository:
+1. git clone https://github.com/goapilz/udareact-books.git
+   clone the git to the local storage
+2. git pull
+   update the local version of the repository
+
+
+switch branches:
+1. git checkout master   /    git checkout searchquery-using-url-parameter
+   switch to master or any other given branch
