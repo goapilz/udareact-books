@@ -42,7 +42,6 @@ class Book extends React.Component {
 
     render() {
         const {bookStates, book} = this.props
-        const authors = book.authors
         return (
             <li key={book.id}>
                 <div className='book'>
@@ -66,9 +65,10 @@ class Book extends React.Component {
                         </div>
                     </div>
                     <div className='book-title'>{book.title}</div>
-                    {authors && authors.map((author) => (
+                    {book.authors && (<div className='book-authors'>{book.authors.join(', ')}</div>)}
+                    {/* {book.authors && book.authors.map((author) => (
                         <div className='book-authors' key={author}>{author}</div>
-                    ))}
+                    ))}*/}
                 </div>
             </li>
         )
