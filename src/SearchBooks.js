@@ -10,7 +10,8 @@ class SearchBooks extends React.Component {
     static propTypes = {
         bookStates: PropTypes.array.isRequired,
         onBookUpdate: PropTypes.func.isRequired,
-        books: PropTypes.array.isRequired
+        books: PropTypes.array.isRequired,
+        history: PropTypes.object.isRequired
     }
 
     constructor(props) {
@@ -26,15 +27,17 @@ class SearchBooks extends React.Component {
         this.setState({query: query.trim()})
     }
 
-    clearQuery = () => {
+    clearQuery = (history) => {
         this.setState({query: '', lastQuery: '', searchResult: []})
+        history.push('/search')
         this.focusSearchQuery()
     }
 
-    onSearch = () => {
+    onSearch = (history) => {
         const query = this.state.query
         const books = this.props.books
         console.log(`searching for ${query}`)
+        history.push(`/search/${query}`)
 
         // trigger new search
         BooksAPI.search(query, maxSearchResults).then(searchResult => {
@@ -74,7 +77,7 @@ class SearchBooks extends React.Component {
     }
 
     render() {
-        const {bookStates, onBookUpdate} = this.props
+        const {bookStates, onBookUpdate, history} = this.props
         const {query, lastQuery, searchResult} = this.state
         return (
             <div>
@@ -87,10 +90,10 @@ class SearchBooks extends React.Component {
                                }}
                                value={query}
                                onChange={(event) => this.updateQuery(event.target.value)}
-                               onKeyPress={(event) => event.key === 'Enter' && this.onSearch()}
+                               onKeyPress={(event) => event.key === 'Enter' && this.onSearch(history)}
                         />
                     </div>
-                    <div className='clear-search'><button className='clear-search' onClick={this.clearQuery}/></div>
+                    <div className='clear-search'><button className='clear-search' onClick={this.clearQuery(history)}/></div>
                 </div>
                 <BookGrid gridClassName='search-books-results' gridDisplayName={`Searchresult for ${lastQuery}`} bookStates={bookStates} books={searchResult} onBookUpdate={onBookUpdate}/>
             </div>

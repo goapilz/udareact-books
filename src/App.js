@@ -72,10 +72,11 @@ class App extends React.Component {
                         books={books}
                     />
                 )}/>
-                <Route path='/search' render={() => (
+                <Route path='/search' render={({history}) => (
                     <SearchBooks
                         onBookUpdate={onBookUpdate}
                         bookStates={bookStates}
+                        history={history}
                         books={books}
                     />
                 )}/>
