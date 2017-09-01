@@ -22,43 +22,50 @@ class SearchBooks extends React.Component {
         }
     }
 
-    updateQuery = (query) => {
-        this.setState({query: query.trim()})
-    }
-
     clearQuery = () => {
         this.setState({query: '', lastQuery: '', searchResult: []})
         this.focusSearchQuery()
     }
 
-    onSearch = () => {
-        const query = this.state.query
-        const books = this.props.books
-        console.log(`searching for ${query}`)
+    timestamp = 0;
 
-        // trigger new search
-        BooksAPI.search(query, maxSearchResults).then(searchResult => {
-            if (searchResult.length) {
-                console.log(`found ${searchResult.length} books for ${query}`)
-                /* for (let book of searchResult) {
-                    console.log(` - id: ${book.id} title: ${book.title}`)
-                }*/
+    onSearch = (query) => {
+        const newTimestamp = Date.now();
+        this.timestamp = newTimestamp;
 
-                // 'merge' state of found books with books from the library
-                for (let searchBook of searchResult) {
-                    const exitingBook = books.find(book => book.id === searchBook.id)
-                    if (exitingBook) {
-                        searchBook.shelf = exitingBook.shelf
+        const newQuery = query.trim();
+
+        if (newQuery.length > 0) {
+            // update query
+            this.setState({query: newQuery})
+
+            // trigger new search (async)
+            BooksAPI.search(newQuery, maxSearchResults).then(searchResult => {
+                if (searchResult.length) {
+                    // 'merge' state of found books with books from the library
+                    const books = this.props.books
+                    for (let searchBook of searchResult) {
+                        const exitingBook = books.find(book => book.id === searchBook.id)
+                        if (exitingBook) {
+                            searchBook.shelf = exitingBook.shelf
+                        }
+                    }
+
+                    if (this.timestamp === newTimestamp) {
+                        this.setState({lastQuery: newQuery, searchResult: searchResult})
+                        console.log(`found ${searchResult.length} books for ${newQuery}`)
+                    }
+                } else {
+                    if (this.timestamp === newTimestamp) {
+                        this.setState({lastQuery: newQuery, searchResult: []})
+                        console.log(`no books found for ${newQuery}`)
                     }
                 }
-
-                this.setState({lastQuery: query, searchResult: searchResult})
-            } else {
-                console.log(`no books found for ${query}`)
-                this.setState({lastQuery: query, searchResult: []})
-            }
-            this.selectSearchQuery()
-        })
+            })
+        } else {
+            this.setState({query: newQuery, lastQuery: newQuery, searchResult: []})
+            console.log(`empty query`)
+        }
     }
 
     componentDidMount() {
@@ -67,10 +74,6 @@ class SearchBooks extends React.Component {
 
     focusSearchQuery() {
         this.searchInput.focus()
-    }
-
-    selectSearchQuery() {
-        this.searchInput.select()
     }
 
     render() {
@@ -82,12 +85,9 @@ class SearchBooks extends React.Component {
                     <Link className='close-search' to='/'>Close</Link>
                     <div className='search-books-input-wrapper'>
                         <input type='text' placeholder='Search by title or author'
-                               ref={(input) => {
-                                   this.searchInput = input
-                               }}
+                               ref={(input) => {this.searchInput = input}}
                                value={query}
-                               onChange={(event) => this.updateQuery(event.target.value)}
-                               onKeyPress={(event) => event.key === 'Enter' && this.onSearch()}/>
+                               onChange={(event) => this.onSearch(event.target.value)}/>
                     </div>
                     <button className='clear-search' onClick={this.clearQuery}/>
                 </div>
