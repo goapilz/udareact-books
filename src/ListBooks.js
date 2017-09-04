@@ -2,6 +2,7 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import BookGrid from './BookGrid'
+import {log} from "./util/Logger";
 
 class ListBooks extends React.Component {
 
@@ -12,6 +13,7 @@ class ListBooks extends React.Component {
     }
 
     render() {
+        log('ListBooks.render()')
         const {bookStates, books, onBookUpdate} = this.props
         return (
             <div className="list-books-content">

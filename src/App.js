@@ -58,6 +58,7 @@ class App extends React.Component {
     }
 
     render() {
+        log('App.render()')
         const onBookUpdate = this.onBookUpdate
         const books = this.state.books
         return (

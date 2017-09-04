@@ -79,6 +79,7 @@ class SearchBooks extends React.Component {
     }
 
     render() {
+        log('SearchBooks.render()')
         const {bookStates, onBookUpdate} = this.props
         const {query, lastQuery, searchResult} = this.state
         return (

@@ -10,13 +10,6 @@ class Book extends React.Component {
         book: PropTypes.object.isRequired,
         onBookUpdate: PropTypes.func.isRequired
     }
-
-    constructor(props) {
-        super(props)
-        const book = props.book
-        this.state = {state: book.shelf ? book.shelf : nullBookState.id}
-    }
-
     updateBookState = (updatedState) => {
         const {book, onBookUpdate} = this.props
         if (!updatedState || updatedState === nullBookState.id) {
@@ -28,11 +21,9 @@ class Book extends React.Component {
         this.setState({state: book.shelf})
         onBookUpdate(book)
     }
-
     getBookState = () => {
         return this.state.state
     }
-
     isBookStateSet = () => {
         const state = this.state.state
         if (!state || state === nullBookState.id) {
@@ -41,8 +32,22 @@ class Book extends React.Component {
         return true
     }
 
+    constructor(props) {
+        super(props)
+        const book = props.book
+        this.state = {state: book.shelf ? book.shelf : nullBookState.id}
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        log(`Book.shouldComponentUpdate(${this.props && this.props.book.id}) (${this.state && this.state.state} ${nextState && nextState.state})`)
+        if (this.state && this.state.state === nextState.state) {
+            return false
+        }
+        return true
+    }
     render() {
         const {bookStates, book} = this.props
+        log(`Book.render(${book.id})`)
         return (
             <li key={book.id}>
                 <div className='book'>
