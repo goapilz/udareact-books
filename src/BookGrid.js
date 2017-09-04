@@ -19,7 +19,6 @@ class BookGrid extends React.Component {
         if (this.props && this.props.books.length === nextProps.books.length) {
             return false
         }
-        //return super.shouldComponentUpdate(nextProps, nextState)
         return true
     }
 
