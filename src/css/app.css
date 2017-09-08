@@ -94,13 +94,21 @@ body, .app {
     background: #e9e;
 }
 
-.search-books-bar input {
+.search-books-input {
     width: 100%;
     padding: 15px 10px;
     font-size: 1.25em;
     border: none;
     outline: none;
 }
+
+.search-books-input::-ms-clear,
+.search-books-input::-ms-reveal{
+    display: none;
+    width : 0;
+    height: 0;
+}
+
 
 .close-search,
 .close-search:hover,
